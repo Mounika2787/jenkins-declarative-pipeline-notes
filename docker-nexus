@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+               git url: 'https://github.com/Mounika2787/Mempage-repo.git'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                sh "docker build -t mounika123 ."
+            }
+        }
+        stage('tag docker image') {
+            steps {
+                sh "docker tag mounika123 54.146.225.188:8087/myimage:1.8"
+            }
+        }
+        stage('docker login') {
+            steps {
+                sh "docker login -u admin -p 12345 54.146.225.188:8087"
+            }
+        }
+        stage('docker push') {
+            steps {
+                sh "docker push 54.146.225.188:8087/myimage:1.8"
+            }
+        }
+    }
+}
